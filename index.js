@@ -25,7 +25,10 @@ const path = require("path");
 
         for await (const file of globber.globGenerator()) {
             const data = await fs.promises.readFile(file);
-            const testSrcPath = file.substring(0, file.lastIndexOf("/")) + "/../../src/test/java/";
+            const sureFire = file.substring(0, file.lastIndexOf("/"));
+            const target = sureFire.substring(0, sureFire.lastIndexOf("/"));
+            const mainDir = target.substring(0, target.lastIndexOf("/"));
+            const testSrcPath = mainDir + "/src/test/java/";
             var json = JSON.parse(parser.toJson(data));
             if(json.testsuite) {
                 const testsuite = json.testsuite;
