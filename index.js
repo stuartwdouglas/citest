@@ -112,13 +112,14 @@ const path = require("path");
 
 const createReq = {
                                   ...github.context.repo,
-                                  name: jobName + '-junit',
+                                  name: 'test-tmp-junit',
                                   head_sha: github.context.sha,
                                   status: 'completed',
                                   conclusion: 'failure',
                                 output: {
                                     title: "Junit Results",
-                                    summary: `Num passed etc`,
+                                    summary: 'Num passed etc',
+                                    text: 'Some Ext',
                                     annotations: [annotation, ...annotations]
                                 }
                                 }
