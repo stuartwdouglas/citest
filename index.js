@@ -94,7 +94,12 @@ const path = require("path");
         const res = await octokit.checks.listForRef(req);
         const jobName = process.env.GITHUB_JOB
 
-        const checkRun = res.data.check_runs.find(check => check.name === jobName)
+        const checkRun = await octokit.checks.create({
+                owner,
+                ref: github.context.sha,
+                name: jobName + " junit"
+              })
+
         if(!checkRun) {
             console.log(JSON.stringify(res.data.check_runs))
         }
