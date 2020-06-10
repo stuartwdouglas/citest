@@ -95,8 +95,6 @@ const path = require("path");
 
 
         const res = await octokit.checks.listSuitesForRef(req);
-        console.log(JSON.stringify(req.data))
-        console.log(JSON.stringify(res))
         const jobName = process.env.GITHUB_JOB
 
         const annotation_level = numFailed + numErrored > 0 ?'failure': 'notice';
@@ -113,7 +111,7 @@ const path = require("path");
 
 const createReq = {
                                   ...github.context.repo,
-                                  head_sha: github.context.head_ref,
+                                  'head_sha': github.context.head_ref,
                                   name: jobName + '-junit',
                                   status: 'completed',
                                   conclusion: 'failure',
