@@ -113,7 +113,9 @@ const path = require("path");
         const checkRun = await octokit.checks.create({
                 ...github.context.repo,
                 head_sha: github.context.head_ref,
-                name: jobName + " junit",
+                name: jobName + '-junit',
+                status: 'completed',
+                conclusion: 'failed',
 
               output: {
                   title: "Junit Results",
