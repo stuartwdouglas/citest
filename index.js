@@ -110,19 +110,21 @@ const path = require("path");
             message: `Junit Results ran ${numTests} in ${testDuration} seconds ${numErrored} Errored, ${numFailed} Failed, ${numSkipped} Skipped`,
           };
 
-        const checkRun = await octokit.checks.create({
-                ...github.context.repo,
-                head_sha: github.context.head_ref,
-                name: jobName + '-junit',
-                status: 'completed',
-                conclusion: 'failure',
 
-              output: {
-                  title: "Junit Results",
-                  summary: `Num passed etc`,
-                  annotations: [annotation, ...annotations]
-              }
-              });
+const createReq = {
+                                  ...github.context.repo,
+                                  head_sha: github.context.head_ref,
+                                  name: jobName + '-junit',
+                                  status: 'completed',
+                                  conclusion: 'failure',
+                                output: {
+                                    title: "Junit Results",
+                                    summary: `Num passed etc`,
+                                    annotations: [annotation, ...annotations]
+                                }
+                                }
+            console.log(JSON.stringify(createReq))
+        const checkRun = await octokit.checks.create(createReq);
             console.log(JSON.stringify(checkRun))
 //
 //        // const annotation = {
