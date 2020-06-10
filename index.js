@@ -99,9 +99,6 @@ const path = require("path");
         console.log(JSON.stringify(res))
         const jobName = process.env.GITHUB_JOB
 
-        if(!checkRun) {
-            console.log(JSON.stringify(res.data.check_runs))
-        }
         const check_run_id = checkRun.id
 
         const annotation_level = numFailed + numErrored > 0 ?'failure': 'notice';
