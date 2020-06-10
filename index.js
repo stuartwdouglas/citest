@@ -128,7 +128,7 @@ const path = require("path");
 
         const update_req = {
             ...github.context.repo,
-            check_run_id,
+            checkRun,
             output: {
                 title: "Junit Results",
                 summary: `Num passed etc`,
