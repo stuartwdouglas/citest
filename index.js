@@ -25,6 +25,7 @@ const path = require("path");
 
         for await (const file of globber.globGenerator()) {
             const data = await fs.promises.readFile(file);
+            const testSrcPath = file.substring(0, file.lastIndexOf("/")) + "/../../src/test/java";
             var json = JSON.parse(parser.toJson(data));
             if(json.testsuite) {
                 const testsuite = json.testsuite;
@@ -33,12 +34,11 @@ const path = require("path");
                 numErrored +=  Number(testsuite.errors);
                 numFailed +=  Number(testsuite.failures);
                 numSkipped +=  Number(testsuite.skipped);
-                testFunction = async testcase file => {
+                testFunction = async testcase => {
                     if(testcase.failure) {
                         if(annotations.length < numFailures) {
                             const klass = testcase.classname.replace(/$.*/g, '').replace(/\./g, '/');
 
-                            const testSrcPath = file.substring(0, file.lastIndexOf("/")) + "/../../src/test/java";
 
                             const filePath = `${testSrcPath}${klass}.java`
 
