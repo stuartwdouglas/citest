@@ -93,7 +93,6 @@ const path = require("path");
 
         const checkRun = res.data.check_runs.find(check => check.name === jobName)
         if(!checkRun) {
-            console.log(JSON.stringify(process.env))
             console.log(JSON.stringify(res.data.check_runs))
         }
         const check_run_id = checkRun.id
