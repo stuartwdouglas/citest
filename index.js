@@ -93,7 +93,14 @@ const path = require("path");
         }
 
         const res = await octokit.checks.listForRef(req);
-            console.log(JSON.stringify(res))
+
+        const newSuitesData = octokit.checks.createSuite({
+        ...github.context.repo,
+          head_sha:github.context.sha,
+        });
+        console.log(JSON.stringify(newSuitesData))
+
+
         const jobName = process.env.GITHUB_JOB
 
         const annotation_level = numFailed + numErrored > 0 ?'failure': 'notice';
