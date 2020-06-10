@@ -33,7 +33,7 @@ const path = require("path");
                 numErrored +=  Number(testsuite.errors);
                 numFailed +=  Number(testsuite.failures);
                 numSkipped +=  Number(testsuite.skipped);
-                testFunction = async testcase => {
+                testFunction = async testcase file => {
                     if(testcase.failure) {
                         if(annotations.length < numFailures) {
                             const klass = testcase.classname.replace(/$.*/g, '').replace(/\./g, '/');
