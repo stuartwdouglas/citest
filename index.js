@@ -92,21 +92,10 @@ const path = require("path");
         ref: github.context.sha
         }
 
-        const res = await octokit.checks.listForRef(req);
-        console.log(JSON.stringify(req.data))
-        console.log(JSON.stringify(res))
+
+
+        const res = await octokit.checks.listSuitesForRef(req);
         const jobName = process.env.GITHUB_JOB
-
-        const checkRun = await octokit.checks.create({
-                ...github.context.repo,
-                head_sha: github.context.sha,
-                name: jobName + " junit"
-              });
-
-        if(!checkRun) {
-            console.log(JSON.stringify(res.data.check_runs))
-        }
-        const check_run_id = checkRun.id
 
         const annotation_level = numFailed + numErrored > 0 ?'failure': 'notice';
         const annotation = {
@@ -118,27 +107,45 @@ const path = require("path");
             annotation_level,
             message: `Junit Results ran ${numTests} in ${testDuration} seconds ${numErrored} Errored, ${numFailed} Failed, ${numSkipped} Skipped`,
           };
-        // const annotation = {
-        //   path: 'test',
-        //   start_line: 1,
-        //   end_line: 1,
-        //   start_column: 2,
-        //   end_column: 2,
-        //   annotation_level,
-        //   message: `[500] failure`,
-        // };
 
 
-        const update_req = {
-            ...github.context.repo,
-            checkRun,
-            output: {
-                title: "Junit Results",
-                summary: `Num passed etc`,
-                annotations: [annotation, ...annotations]
-            }
-        }
-        await octokit.checks.update(update_req);
+const createReq = {
+                                  ...github.context.repo,
+                                  name: jobName + '-junit',
+                                  head_sha: github.context.sha,
+                                  status: 'completed',
+                                  conclusion: 'failure',
+                                output: {
+                                    title: "Junit Results",
+                                    summary: `Num passed etc`,
+                                    annotations: [annotation, ...annotations]
+                                }
+                                }
+            console.log(JSON.stringify(createReq))
+        const checkRun = await octokit.checks.create(createReq);
+            console.log(JSON.stringify(checkRun))
+//
+//        // const annotation = {
+//        //   path: 'test',
+//        //   start_line: 1,
+//        //   end_line: 1,
+//        //   start_column: 2,
+//        //   end_column: 2,
+//        //   annotation_level,
+//        //   message: `[500] failure`,
+//        // };
+//
+//
+//        const update_req = {
+//            ...github.context.repo,
+//            checkRun,
+//            output: {
+//                title: "Junit Results",
+//                summary: `Num passed etc`,
+//                annotations: [annotation, ...annotations]
+//            }
+//        }
+//        await octokit.checks.create(update_req);
     } catch (error) {
    		core.setFailed(error.message);
     }
