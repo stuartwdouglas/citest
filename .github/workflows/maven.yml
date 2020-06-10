@@ -18,9 +18,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-#      - name: Build with Maven
-#        run: mvn -B package --file pom.xml
       - uses: .
+      - name: Test stuff
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
