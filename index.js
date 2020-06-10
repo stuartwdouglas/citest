@@ -99,12 +99,6 @@ const path = require("path");
         console.log(JSON.stringify(res))
         const jobName = process.env.GITHUB_JOB
 
-        const checkRun = await octokit.checks.create({
-                ...github.context.repo,
-                head_sha: github.context.sha,
-                name: jobName + " junit"
-              });
-
         if(!checkRun) {
             console.log(JSON.stringify(res.data.check_runs))
         }
@@ -120,6 +114,20 @@ const path = require("path");
             annotation_level,
             message: `Junit Results ran ${numTests} in ${testDuration} seconds ${numErrored} Errored, ${numFailed} Failed, ${numSkipped} Skipped`,
           };
+
+        const checkRun = await octokit.checks.create({
+                ...github.context.repo,
+                head_sha: github.context.sha,
+                name: jobName + " junit",
+
+              output: {
+                  title: "Junit Results",
+                  summary: `Num passed etc`,
+                  annotations: [annotation, ...annotations]
+              }
+              });
+            console.log(JSON.stringify(checkRun))
+
         // const annotation = {
         //   path: 'test',
         //   start_line: 1,
@@ -140,7 +148,7 @@ const path = require("path");
                 annotations: [annotation, ...annotations]
             }
         }
-        await octokit.checks.update(update_req);
+        await octokit.checks.create(update_req);
     } catch (error) {
    		core.setFailed(error.message);
     }
