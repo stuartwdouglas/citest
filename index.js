@@ -25,7 +25,10 @@ const path = require("path");
 
         for await (const file of globber.globGenerator()) {
             const data = await fs.promises.readFile(file);
-            const testSrcPath = file.substring(0, file.lastIndexOf("/")) + "/../../src/test/java/";
+            const sureFire = file.substring(0, file.lastIndexOf("/"));
+            const target = sureFire.substring(0, sureFire.lastIndexOf("/"));
+            const mainDir = target.substring(0, target.lastIndexOf("/"));
+            const testSrcPath = mainDir + "/src/test/java/";
             var json = JSON.parse(parser.toJson(data));
             if(json.testsuite) {
                 const testsuite = json.testsuite;
@@ -89,11 +92,17 @@ const path = require("path");
         ref: github.context.sha
         }
         const res = await octokit.checks.listForRef(req);
+        console.log(JSON.stringify(req))
+        console.log(JSON.stringify(res))
         const jobName = process.env.GITHUB_JOB
 
-        const checkRun = res.data.check_runs.find(check => check.name === jobName)
+        const checkRun = await octokit.checks.create({
+                ...github.context.repo,
+                head_sha: github.context.sha,
+                name: jobName + " junit"
+              });
+
         if(!checkRun) {
-            console.log(JSON.stringify(process.env))
             console.log(JSON.stringify(res.data.check_runs))
         }
         const check_run_id = checkRun.id
@@ -121,7 +130,7 @@ const path = require("path");
 
         const update_req = {
             ...github.context.repo,
-            check_run_id,
+            checkRun,
             output: {
                 title: "Junit Results",
                 summary: `Num passed etc`,
