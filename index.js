@@ -112,7 +112,7 @@ const path = require("path");
 
         const checkRun = await octokit.checks.create({
                 ...github.context.repo,
-                head_sha: github.context.sha,
+                head_sha: github.context.head_ref,
                 name: jobName + " junit",
 
               output: {
@@ -122,28 +122,28 @@ const path = require("path");
               }
               });
             console.log(JSON.stringify(checkRun))
-
-        // const annotation = {
-        //   path: 'test',
-        //   start_line: 1,
-        //   end_line: 1,
-        //   start_column: 2,
-        //   end_column: 2,
-        //   annotation_level,
-        //   message: `[500] failure`,
-        // };
-
-
-        const update_req = {
-            ...github.context.repo,
-            checkRun,
-            output: {
-                title: "Junit Results",
-                summary: `Num passed etc`,
-                annotations: [annotation, ...annotations]
-            }
-        }
-        await octokit.checks.create(update_req);
+//
+//        // const annotation = {
+//        //   path: 'test',
+//        //   start_line: 1,
+//        //   end_line: 1,
+//        //   start_column: 2,
+//        //   end_column: 2,
+//        //   annotation_level,
+//        //   message: `[500] failure`,
+//        // };
+//
+//
+//        const update_req = {
+//            ...github.context.repo,
+//            checkRun,
+//            output: {
+//                title: "Junit Results",
+//                summary: `Num passed etc`,
+//                annotations: [annotation, ...annotations]
+//            }
+//        }
+//        await octokit.checks.create(update_req);
     } catch (error) {
    		core.setFailed(error.message);
     }
