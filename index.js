@@ -115,7 +115,7 @@ const path = require("path");
                 head_sha: github.context.head_ref,
                 name: jobName + '-junit',
                 status: 'completed',
-                conclusion: failure,
+                conclusion: 'failure',
 
               output: {
                   title: "Junit Results",
