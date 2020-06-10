@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - uses: .
+      - uses: ./
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
