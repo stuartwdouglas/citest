@@ -19,7 +19,6 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - uses: .
-      - name: Test stuff
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
         if: always()
