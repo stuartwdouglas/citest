@@ -9,7 +9,6 @@ const path = require("path");
 (async () => {
     try {
         const inputPath = core.getInput('path');
-        const includeSummary = core.getInput('includeSummary');
         const numFailures = core.getInput('numFailures');
         const accessToken = core.getInput('access-token');
         const globber = await glob.create(inputPath, {followSymbolicLinks: false});
