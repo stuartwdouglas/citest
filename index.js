@@ -96,7 +96,7 @@ const path = require("path");
 
         const checkRun = await octokit.checks.create({
                 ...github.context.repo,
-                ref: github.context.sha,
+                head_sha: github.context.sha,
                 name: jobName + " junit"
               })
 
