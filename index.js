@@ -57,7 +57,7 @@ const path = require("path");
                                     break;
                                 }
                             }
-                            console.info(`::error file=${filePath},line=${line},col=0::Junit test ${testcase.name} failed ${testcase.failure.$t}`)
+                            console.info(`::error:: file=${filePath} Junit test ${testcase.name} failed ${testcase.failure.$t}`)
                             annotations.push({
                                 path: filePath,
                                 start_line: line,
