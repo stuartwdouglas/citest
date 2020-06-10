@@ -92,6 +92,7 @@ const path = require("path");
         ref: github.context.sha
         }
         const res = await octokit.checks.listForRef(req);
+            console.log(JSON.stringify(res))
         const jobName = process.env.GITHUB_JOB
 
         const checkRun = await octokit.checks.create({
