@@ -91,6 +91,7 @@ const path = require("path");
         ...github.context.repo,
         ref: github.context.sha
         }
+        
         const res = await octokit.checks.listForRef(req);
         console.log(JSON.stringify(req))
         console.log(JSON.stringify(res))
